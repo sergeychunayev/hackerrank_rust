@@ -9,10 +9,7 @@ fn connect(g: &mut [u64], u: u64, v: u64) {
 
 pub fn demanding_money(money: Vec<u64>, roads: Vec<[u64; 2]>) -> Res {
     let n = money.len();
-    let mut g: Vec<u64> = Vec::new();
-    for _ in 0..n {
-        g.push(0)
-    }
+    let mut g: Vec<u64> = vec![0; n];
     // println!("{:?}", g);
     for [u, v] in roads {
         connect(&mut g, u - 1, v - 1);
@@ -27,10 +24,7 @@ pub fn demanding_money(money: Vec<u64>, roads: Vec<[u64; 2]>) -> Res {
         } else if let Some(result) = cache.get(&unvisited_bits) {
             *result
         } else {
-            let mut u = 0_u64;
-            while u < (money.len() as u64) && unvisited_bits & 1 << u == 0 {
-                u += 1;
-            }
+            let u = unvisited_bits.trailing_zeros();
             let bits = unvisited_bits & !(1 << u);
             let adj = g[u as usize];
             let bits_no_neighbors = bits & !adj;
